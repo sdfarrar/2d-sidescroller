@@ -3,6 +3,10 @@ package game;
 import game.core.VariableTimestepGame;
 
 public class SidescrollerGame extends VariableTimestepGame{
+	
+	public SidescrollerGame() {
+		super();
+	}
 
 	@Override
 	public void initGameObjects() {
