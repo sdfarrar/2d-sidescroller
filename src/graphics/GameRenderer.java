@@ -58,6 +58,9 @@ public class GameRenderer {
     private Font font;
 	private Font debugFont;
 	
+	private Matrix4f ortho;
+	private int windowWidth, windowHeight;
+	
     /**
      * Initializes the renderer.
      *
@@ -105,6 +108,8 @@ public class GameRenderer {
         GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
         int width = widthBuffer.get();
         int height = heightBuffer.get();
+        windowWidth = width;
+        windowHeight = height;
 
         // specify the vertex attributes. describe the order/structure of our vertices buffer
         specifyVertexAttributes();
@@ -114,7 +119,7 @@ public class GameRenderer {
         program.setUniform(uniTex, 0);
 
         // create the orthographic matrix and set the uniform in the shader
-        Matrix4f ortho = Matrix4f.orthographic(0f, width, 0f, height, -1f, 1f);
+        ortho = Matrix4f.orthographic(0f, width, 0f, height, -1f, 1f);
         int uniOrtho = program.getUniformLocation("ortho");
         program.setUniform(uniOrtho, ortho);
 
@@ -123,8 +128,8 @@ public class GameRenderer {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
         try {
-            font = new Font(new FileInputStream("res/Inconsolata.otf"), 16);
-        } catch (FontFormatException | IOException ex) {
+            font = new Font(16);
+        } catch (Exception ex) {
             Logger.getLogger(GameRenderer.class.getName()).log(Level.CONFIG, null, ex);
             font = new Font();
         }
@@ -144,6 +149,15 @@ public class GameRenderer {
         program.delete();
         font.dispose();
 		debugFont.dispose();
+    }
+    
+    private float x=0;
+    private float y=0;
+    private float z=0;
+    public void translateView(float dx, float dy, float dz){
+    	x-=dx;y-=dy;z-=dz;
+
+    	ortho = Matrix4f.orthographic(0+x, windowWidth+x, 0+y, windowHeight+y, -1f, 1f);
     }
 
     /**
@@ -188,6 +202,10 @@ public class GameRenderer {
 
             program.use();
 
+            // create the orthographic matrix and set the uniform in the shader
+            int uniOrtho = program.getUniformLocation("ortho");
+            program.setUniform(uniOrtho, ortho);
+            
             /* Upload the new vertex data */
             vbo.bind(GL_ARRAY_BUFFER);
             vbo.uploadSubData(GL_ARRAY_BUFFER, 0, vertices);
