@@ -32,7 +32,6 @@ public abstract class VariableTimestepGame extends AbstractGame {
             //window.setVSync(false);
             if (!window.isVSyncEnabled()) {
                 sync(TARGET_FPS);
-            	//sync(120);
             }
         }
     }
