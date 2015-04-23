@@ -5,6 +5,8 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import graphics.GameRenderer;
+import graphics.ShapeRenderer;
+import graphics.StaticShapeRenderer;
 import graphics.TextRenderer;
 import graphics.Window;
 
@@ -20,8 +22,10 @@ public abstract class AbstractGame {
     
 	protected Timer timer;
 	protected Window window;
+	protected ShapeRenderer shapeRenderer;
 	protected GameRenderer renderer;
 	protected TextRenderer textRenderer;
+	protected StaticShapeRenderer staticRenderer;
 	protected boolean running;
 	
 	private GLFWErrorCallback errorCallback;
@@ -32,6 +36,8 @@ public abstract class AbstractGame {
 		timer = new Timer();
 		renderer = new GameRenderer();	
 		textRenderer = new TextRenderer();
+		shapeRenderer = new ShapeRenderer();
+		staticRenderer = new StaticShapeRenderer();
 	}
 	
 	public void start(){
@@ -53,6 +59,8 @@ public abstract class AbstractGame {
 		timer.init();
 		renderer.init();
 		textRenderer.init();
+		shapeRenderer.init();
+		staticRenderer.init();
 
 		initGameObjects();
 		
@@ -80,16 +88,21 @@ public abstract class AbstractGame {
 	}
 	
 	public void render(float alpha){
-		renderer.clear();
-		renderer.begin();
+//		renderer.clear();
+//		renderer.begin();
+		shapeRenderer.clear();
+		shapeRenderer.begin();
 		renderGameObjects(alpha);
-		renderer.end();
+		shapeRenderer.end();
+//		renderer.end();
 	}	
 	
 	public void dispose(){
 		window.destroy();
 		renderer.dispose();
 		textRenderer.dispose();
+		shapeRenderer.dispose();
+		staticRenderer.dispose();
 		disposeGameObjects();
 		glfwTerminate();
 		errorCallback.release();

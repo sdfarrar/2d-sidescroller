@@ -35,8 +35,13 @@ public class SidescrollerGame extends VariableTimestepGame{
 	}
 
 	@Override
-	public void renderGameObjects(float alpha) {
-		renderer.drawSquare(200, 100, 45, 45, Color.white);
+	public void renderGameObjects(float alpha) {		
+//		renderer.drawSquare(200, 100, 45, 45, Color.white);
+		staticRenderer.drawRect(400, 200, 600, 175, Color.blue);
+		staticRenderer.flush();		// TODO i don't like having to call this here
+		shapeRenderer.drawSquare(200, 100, 45, 45, Color.white);
+		shapeRenderer.drawCircle(600, 500, 50, Color.red);
+		shapeRenderer.drawLine(0, 0, 800, 400, Color.red);
 	}
 
 	@Override
@@ -48,16 +53,16 @@ public class SidescrollerGame extends VariableTimestepGame{
 	@Override
 	public void input() {
 		if(KeyInput.isKeyDown(GLFW_KEY_D)){
-			renderer.translateView(5, 0, 0);
+			shapeRenderer.moveCamera(5, 0, 0);
 		}
 		if(KeyInput.isKeyDown(GLFW_KEY_A)){
-			renderer.translateView(-5, 0, 0);
+			shapeRenderer.moveCamera(-5, 0, 0);
 		}
 		if(KeyInput.isKeyDown(GLFW_KEY_W)){
-			renderer.translateView(0, 5, 0);
+			shapeRenderer.moveCamera(0, 5, 0);
 		}
 		if(KeyInput.isKeyDown(GLFW_KEY_S)){
-			renderer.translateView(0, -5, 0);
+			shapeRenderer.moveCamera(0, -5, 0);
 		}
 		if(KeyInput.isKeyDown(GLFW_KEY_ESCAPE)){
 			long id = glfwGetCurrentContext();
@@ -67,7 +72,8 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void renderText() {
-		
+		textRenderer.drawDebugText("FPS:"+timer.getFPS(), 950, 745, Color.green);
+		textRenderer.drawDebugText("UPS:"+timer.getUPS(), 950, 725, Color.green);
 	}
 
 }
