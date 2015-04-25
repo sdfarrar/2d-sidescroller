@@ -8,15 +8,15 @@ import java.util.ArrayDeque;
 
 public class RenderingPrimitivesManager {
 	
-	private ArrayDeque<RenderingChunk> deque; 
+	private ArrayDeque<RenderingChunk> deque;
 	
 	public RenderingPrimitivesManager(){
 		deque = new ArrayDeque<RenderingChunk>();
 	}
 	
 	public void addRenderingData(int primitiveType, int verticesAdded){
-		if(deque.isEmpty()){
-			deque.push(new RenderingChunk(primitiveType, verticesAdded));
+		if(deque.isEmpty()){			
+			deque.add(new RenderingChunk(primitiveType, verticesAdded));
 			return;
 		}
 		

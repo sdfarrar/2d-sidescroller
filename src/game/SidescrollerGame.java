@@ -39,10 +39,12 @@ public class SidescrollerGame extends VariableTimestepGame{
 //		renderer.drawSquare(200, 100, 45, 45, Color.white);
 		staticRenderer.drawRect(400, 200, 600, 175, Color.blue);
 		staticRenderer.flush();		// TODO i don't like having to call this here
-		shapeRenderer.drawSquare(200, 100, 45, 45, Color.white);
+		shapeRenderer.drawRect(200, 100, 45, 45, Color.white);
 		shapeRenderer.drawCircle(600, 500, 50, Color.red);
 		shapeRenderer.drawLine(0, 0, 800, 400, Color.red);
-		shapeRenderer.drawSquare(500, 300, 150, 75, Color.darkGray);
+		shapeRenderer.drawRect(500, 300, 150, 75, new Color(92,26,122));
+		shapeRenderer.drawRect(500, 100, 15, 75, new Color(255,162,0));
+		shapeRenderer.drawRect(100, 500, 50, 50, Color.darkGray);
 	}
 
 	@Override

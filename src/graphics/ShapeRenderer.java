@@ -89,7 +89,6 @@ public class ShapeRenderer extends AbstractRenderer {
         program.setUniform(uniTex, 0);
 
         // create the orthographic matrix and set the uniform in the shader
-        //ortho = Matrix4f.orthographic(0f, width, 0f, height, -1f, 1f);
         camera = new Camera(width, height);
         int uniOrtho = program.getUniformLocation("ortho");
         program.setUniform(uniOrtho, camera.getOrthoMatrix());
@@ -198,7 +197,7 @@ public class ShapeRenderer extends AbstractRenderer {
 		numVertices += points;		
 	}
 	
-	public void drawSquare(float x, float y, float width, float height, Color color){
+	public void drawRect(float x, float y, float width, float height, Color color){
 		if(vertices.remaining() < 6*7){
 			flush();
 		}
@@ -206,6 +205,8 @@ public class ShapeRenderer extends AbstractRenderer {
 		float r = color.getRed();
 		float g = color.getGreen();
 		float b = color.getBlue();
+		
+		System.out.println("rgb: " + r + ", " + g + ", " + b);
 		
 		Vector2f tl = new Vector2f(x-width/2,y+height/2);
 		Vector2f bl = new Vector2f(x-width/2,y-height/2);
