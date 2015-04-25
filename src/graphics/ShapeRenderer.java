@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import graphics.RenderingPrimitivesManager.RenderingChunk;
 import graphics.opengl.Shader;
 import graphics.opengl.ShaderProgram;
 import graphics.opengl.VertexArrayObject;
@@ -22,27 +23,21 @@ import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import math.Vector2f;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
-import math.Matrix4f;
-import math.Vector2f;
-
 public class ShapeRenderer extends AbstractRenderer {
 	
-	private FloatBuffer lineVertices;
-	private int numLineVertices;
-	
 	private int windowWidth, windowHeight;
-//	private boolean drawing;
-	
+	private RenderingPrimitivesManager primitivesManager;
 	//private Camera camera;
 	
 	public ShapeRenderer() {
 		super();
-		numLineVertices = 0;
 		windowWidth = windowHeight = 0;
-		drawing = false;
+		primitivesManager = new RenderingPrimitivesManager();
 	}
 
 	@Override
@@ -57,7 +52,6 @@ public class ShapeRenderer extends AbstractRenderer {
 
         // create our buffer of vertices to draw with
         vertices = BufferUtils.createFloatBuffer(BUFFER_SIZE);
-        lineVertices = BufferUtils.createFloatBuffer(BUFFER_SIZE);
 
         // allocate storage for the vbo by sending null data to the gpu
         long size = BUFFER_SIZE * Float.BYTES;
@@ -67,7 +61,7 @@ public class ShapeRenderer extends AbstractRenderer {
         vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "res/test_vertex.glsl");
         fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "res/test_fragment.glsl");
 
-        // create the shader programe
+        // create the shader program
         program = new ShaderProgram();
         program.attachShader(vertexShader);
         program.attachShader(fragmentShader);
@@ -134,26 +128,6 @@ public class ShapeRenderer extends AbstractRenderer {
     }	
 
 	@Override
-	public void begin() {
-		if (drawing) {
-            throw new IllegalStateException("Renderer is already drawing!");
-        }
-        drawing = true;
-        numVertices = 0;
-        numLineVertices = 0;
-	}
-
-	@Override
-	public void end() {
-		if (!drawing) {
-            throw new IllegalStateException("Renderer isn't drawing!");
-        }
-        drawing = false;
-        flush();
-        flushLines();
-	}
-
-	@Override
 	public void flush() {
 		if (numVertices > 0) {
             vertices.flip();
@@ -170,8 +144,15 @@ public class ShapeRenderer extends AbstractRenderer {
             vbo.bind(GL_ARRAY_BUFFER);
             vbo.uploadSubData(GL_ARRAY_BUFFER, 0, vertices);
 
-            /* Draw batch */
-            glDrawArrays(GL_TRIANGLES, 0, numVertices);
+            /* Draw batches */
+            RenderingChunk chunk;
+            int first = 0;
+            while((chunk = primitivesManager.getNextChunk())!=null){
+            	System.out.println(chunk);
+            	glDrawArrays(chunk.primitiveType, first, chunk.verticesCount);
+            	first+=chunk.verticesCount;
+            }
+            System.out.println("=========================");
 
             /* Clear vertex data for next batch */
             vertices.clear();
@@ -179,75 +160,46 @@ public class ShapeRenderer extends AbstractRenderer {
         }
 	}
 	
-	public void flushLines(){
-		if (numLineVertices > 0) {
-            lineVertices.flip();
-
-            vao.bind();
-
-            program.use();
-
-            /* Upload the new vertex data */
-            vbo.bind(GL_ARRAY_BUFFER);
-            vbo.uploadSubData(GL_ARRAY_BUFFER, 0, lineVertices);
-
-            /* Draw batch */
-            glDrawArrays(GL_LINES, 0, numLineVertices);
-
-            /* Clear vertex data for next batch */
-            lineVertices.clear();
-            numLineVertices = 0;
-        }
-	}
-	
 	public void drawLine(float x1, float y1, float x2, float y2, Color color){
-		if(lineVertices.remaining()< 2*5)
-			flushLines();
+		if(vertices.remaining()< 2*7)
+			flush();
 		
 		float r = color.getRed();
 		float g = color.getGreen();
 		float b = color.getBlue();
 		
-		lineVertices.put(x1).put(y1).put(r).put(g).put(b).put(0).put(0);
-		lineVertices.put(x2).put(y2).put(r).put(g).put(b).put(0).put(0);
-		numLineVertices+=2;
+		vertices.put(x1).put(y1).put(r).put(g).put(b).put(0).put(0);
+		vertices.put(x2).put(y2).put(r).put(g).put(b).put(0).put(0);
+		numVertices+=2;
+		
+		primitivesManager.addRenderingData(GL_LINES, 2);
 	}
     
 	public void drawCircle(float cx, float cy, float radius, Color color) {
 		float increment = 0.075f;
-		// Since drawing circles utilizes line loops rather than triangles
-		// clear the buffer if any vertices are a
-		if(numVertices>0)
+		int iterations = (int)Math.ceil(2*Math.PI/increment);
+
+		if(vertices.remaining()< 7*iterations)
 			flush();
-		
-		
+
 		float r = color.getRed();
 		float g = color.getGreen();
 		float b = color.getBlue();
 		
+		int points = 0;
 		for(float i=0; i<2*Math.PI; i+=increment){
 			float x = cx + (float) (radius * Math.cos(i));
 			float y = cy + (float) (radius * Math.sin(i));
 			vertices.put(x).put(y).put(r).put(g).put(b).put(0).put(0);
-			numVertices++;
+			points++;
 		}		
-		vertices.flip();
-		
-		vao.bind();
-		program.use();
-		
-		// upload the new vertex data
-		vbo.bind(GL_ARRAY_BUFFER);
-		vbo.uploadSubData(GL_ARRAY_BUFFER, 0, vertices);
 
-		glDrawArrays(GL_LINE_LOOP, 0, numVertices);
-		
-		vertices.clear();
-		numVertices = 0;		
+		primitivesManager.addRenderingData(GL_LINE_LOOP, points);
+		numVertices += points;		
 	}
 	
 	public void drawSquare(float x, float y, float width, float height, Color color){
-		if(vertices.remaining() < 6*5){
+		if(vertices.remaining() < 6*7){
 			flush();
 		}
 	
@@ -269,6 +221,8 @@ public class ShapeRenderer extends AbstractRenderer {
 		vertices.put(br.x).put(br.y).put(r).put(g).put(b).put(0).put(0);
 		
 		numVertices += 6;
+		
+		primitivesManager.addRenderingData(GL_TRIANGLES, 6);
 	}
 	
 	public void moveCamera(int dx, int dy, int dz){

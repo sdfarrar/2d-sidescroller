@@ -39,8 +39,6 @@ import text.Font;
 public class TextRenderer extends AbstractRenderer{
 	private static final int BUFFER_SIZE = 4096;
     
-    //private boolean drawing;
-
     private Font font;
 	private Font debugFont;
 	
@@ -51,7 +49,6 @@ public class TextRenderer extends AbstractRenderer{
      */
     public void init() {
     	numVertices = 0;
-        drawing = false;
         
         // create our vertex array object
         vao = new VertexArrayObject();
@@ -128,28 +125,6 @@ public class TextRenderer extends AbstractRenderer{
         program.delete();
         font.dispose();
 		debugFont.dispose();
-    }
-
-    /**
-     * Begin rendering.
-     */
-    public void begin() {
-        if (drawing) {
-            throw new IllegalStateException("Renderer is already drawing!");
-        }
-        drawing = true;
-        numVertices = 0;
-    }
-
-    /**
-     * End rendering.
-     */
-    public void end() {
-        if (!drawing) {
-            throw new IllegalStateException("Renderer isn't drawing!");
-        }
-        drawing = false;
-        flush();
     }
 
     /**

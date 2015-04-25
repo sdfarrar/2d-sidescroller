@@ -28,11 +28,11 @@ import org.lwjgl.glfw.GLFW;
 
 public class StaticShapeRenderer extends AbstractRenderer {
 	private static final int BUFFER_SIZE = 4096;
+	private RenderingPrimitivesManager primitivesManager;
     
 	@Override
 	public void init() {
 		numVertices = 0;
-        drawing = false;
         
         // create our vertex array object
         vao = new VertexArrayObject();
@@ -53,7 +53,7 @@ public class StaticShapeRenderer extends AbstractRenderer {
         vertexShader = Shader.loadShader(GL_VERTEX_SHADER, "res/test_vertex.glsl");
         fragmentShader = Shader.loadShader(GL_FRAGMENT_SHADER, "res/test_fragment.glsl");
 
-        // create the shader programe
+        // create the shader program
         program = new ShaderProgram();
         program.attachShader(vertexShader);
         program.attachShader(fragmentShader);
@@ -97,24 +97,6 @@ public class StaticShapeRenderer extends AbstractRenderer {
         vertexShader.delete();
         fragmentShader.delete();
         program.delete();
-	}
-
-	@Override
-	public void begin() {
-		if (drawing) {
-            throw new IllegalStateException("Renderer is already drawing!");
-        }
-        drawing = true;
-        numVertices = 0;
-	}
-
-	@Override
-	public void end() {
-		if (!drawing) {
-            throw new IllegalStateException("Renderer isn't drawing!");
-        }
-        drawing = false;
-        flush();
 	}
 
 	@Override

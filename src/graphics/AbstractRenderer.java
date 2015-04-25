@@ -32,7 +32,7 @@ import org.lwjgl.glfw.GLFW;
 public abstract class AbstractRenderer implements Renderer {
 	public static final int BUFFER_SIZE = 4096;
 	
-	protected static boolean drawing;
+	private static boolean drawing;
 	
 	protected VertexArrayObject vao;
 	protected VertexBufferObject vbo;
@@ -49,6 +49,24 @@ public abstract class AbstractRenderer implements Renderer {
 	public AbstractRenderer(){
 		numVertices = 0;
 		drawing = false;
+	}
+	
+	@Override
+	public void begin() {
+		if (drawing) {
+            throw new IllegalStateException("Renderer is already drawing!");
+        }
+        drawing = true;
+        numVertices = 0;
+	}
+
+	@Override
+	public void end() {
+		if (!drawing) {
+            throw new IllegalStateException("Renderer isn't drawing!");
+        }
+        drawing = false;
+        flush();
 	}
 
 	@Override

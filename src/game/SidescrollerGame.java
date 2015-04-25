@@ -42,6 +42,7 @@ public class SidescrollerGame extends VariableTimestepGame{
 		shapeRenderer.drawSquare(200, 100, 45, 45, Color.white);
 		shapeRenderer.drawCircle(600, 500, 50, Color.red);
 		shapeRenderer.drawLine(0, 0, 800, 400, Color.red);
+		shapeRenderer.drawSquare(500, 300, 150, 75, Color.darkGray);
 	}
 
 	@Override
