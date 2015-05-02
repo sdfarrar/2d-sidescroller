@@ -39,4 +39,12 @@ public class Camera {
 		return this.ortho;
 	}
 	
+	public int getScreenWidth(){
+		return this.screenWidth;
+	}
+	
+	public int getScreenHeight(){
+		return this.screenHeight;
+	}
+	
 }

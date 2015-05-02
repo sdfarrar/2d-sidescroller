@@ -3,8 +3,8 @@ package text;
 import static java.awt.Font.MONOSPACED;
 import static java.awt.Font.PLAIN;
 import static java.awt.Font.TRUETYPE_FONT;
-import graphics.TextRenderer;
 import graphics.opengl.Texture;
+import graphics.render.AbstractLayeredRenderer;
 
 import java.awt.Color;
 import java.awt.FontFormatException;
@@ -319,13 +319,13 @@ public class Font {
     /**
      * Draw text at the specified position and color.
      *
-     * @param renderer The renderer to use
+     * @param abstractTextRenderer The renderer to use
      * @param text Text to draw
      * @param x X coordinate of the text position
      * @param y Y coordinate of the text position
      * @param c Color to use
      */
-    public void drawText(TextRenderer renderer, CharSequence text, float x, float y, Color c) {
+    public void drawText(AbstractLayeredRenderer renderer, CharSequence text, float x, float y, Color c) {
         int textHeight = getHeight(text);
 
         float drawX = x;
@@ -349,7 +349,7 @@ public class Font {
                 continue;
             }
             Glyph g = glyphs.get(ch);
-            renderer.drawTextureRegion(texture, drawX, drawY, g.x, g.y, g.width, g.height, c);
+            renderer.drawTextureRegion(texture, drawX, drawY, g.x, g.y, g.width, g.height, c);//THIS SHIT BROKE            
             drawX += g.width;
         }
         renderer.end();
@@ -363,7 +363,7 @@ public class Font {
      * @param x X coordinate of the text position
      * @param y Y coordinate of the text position
      */
-    public void drawText(TextRenderer renderer, CharSequence text, float x, float y) {
+    public void drawText(AbstractLayeredRenderer renderer, CharSequence text, float x, float y) {
         drawText(renderer, text, x, y, Color.WHITE);
     }
 

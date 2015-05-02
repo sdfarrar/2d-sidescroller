@@ -1,6 +1,6 @@
 package game.entity;
 
-import graphics.GameRenderer;
+import graphics.render.GameRenderer;
 
 import java.awt.Color;
 
