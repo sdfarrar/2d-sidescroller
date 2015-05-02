@@ -1,6 +1,6 @@
 package game.entity;
 
-import graphics.render.GameRenderer;
+import graphics.render.LayeredRenderer;
 
 import java.awt.Color;
 
@@ -27,7 +27,7 @@ public abstract class Entity{
 	public abstract void init();
 	public abstract void input();
 	public abstract void update(float delta);
-	public abstract void render(GameRenderer renderer, float alpha);
+	public abstract void render(LayeredRenderer renderer, float alpha);
 	public abstract void dispose();
 	
 	public float getX(){

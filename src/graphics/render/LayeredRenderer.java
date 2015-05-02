@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import math.Matrix4f;
 import math.Vector2f;
 import text.Font;
 
@@ -34,7 +33,7 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 		try {
             font = new Font(new FileInputStream("res/Inconsolata.otf"), 16);
         } catch (FontFormatException | IOException ex) {
-            Logger.getLogger(GameRenderer.class.getName()).log(Level.CONFIG, null, ex);
+            Logger.getLogger(LayeredRenderer.class.getName()).log(Level.CONFIG, null, ex);
             font = new Font();
         }
 		debugFont = new Font(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 16), true);

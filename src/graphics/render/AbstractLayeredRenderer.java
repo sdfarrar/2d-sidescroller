@@ -21,7 +21,6 @@ import graphics.opengl.VertexArrayObject;
 import graphics.opengl.VertexBufferObject;
 import graphics.render.utils.Layer;
 import graphics.render.utils.RenderingLayerManager;
-import graphics.render.utils.RenderingPrimitivesManager;
 
 import java.awt.Color;
 import java.nio.IntBuffer;
