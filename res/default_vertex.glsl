@@ -12,6 +12,5 @@ uniform mat4 ortho;
 void main() {
     vertexColor = color;
     textureCoord = texcoord;
-    mat4 mvp = ortho;
-    gl_Position = mvp * vec4(position, 0.0, 1.0);
+    gl_Position = ortho * vec4(position, 0.0, 1.0);
 }
