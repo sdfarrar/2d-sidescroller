@@ -47,15 +47,17 @@ public class SidescrollerGame extends VariableTimestepGame{
 	public void renderGameObjects(float alpha) {		
 		texture.bind(); // binds a simple texture to be used for drawing
 		renderer.setActiveLayer(0);
-		renderer.drawRect(200, 100, 45, 45, Color.white);
-//		renderer.drawCircle(600, 500, 50, Color.red);
+//		renderer.drawRect(200, 100, 45, 45, Color.white);
+		renderer.drawCircle(600, 500, 50, Color.red);
+		renderer.drawCircleOutline(400, 500, 50, Color.red);
 //		renderer.setActiveLayer(1);
 //		renderer.drawLine(0, 0, 800, 400, Color.red);
-//		renderer.drawRect(500, 300, 150, 75, new Color(92,26,122));
+		renderer.setActiveLayer(2);
+		renderer.drawRectOutline(500, 300, 150, 75, Color.cyan);
 		renderer.setActiveLayer(1);
 		renderer.drawRect(500, 100, 15, 75, new Color(255,162,0));
 		renderer.setActiveLayer(0);
-		renderer.drawRect(500, 75, 50, 50, Color.red);
+//		renderer.drawRect(500, 75, 50, 50, Color.red);
 	}
 
 	@Override

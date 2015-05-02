@@ -2,6 +2,7 @@ package graphics.render;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -49,9 +50,8 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 	public void flush() {
 		int count = 0;
 		for(Layer layer : getLayerManager().getLayers()){
-			if (layer.numVertices > 0) {
-				System.out.println("flushing { layer: " + (count++) + ", vertices: " + layer.numVertices + " }");
-				
+			System.out.println("flushing { layer: " + (count++) + ", vertices: " + layer.numVertices + " }");
+			if (layer.numVertices > 0) {				
 				layer.vertices.flip();
 				
 				vao.bind();
@@ -103,8 +103,16 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 		
 		this.getLayerManager().addRenderingData(GL_LINES, 2);
 	}
-    
+	
 	public void drawCircle(float cx, float cy, float radius, Color color) {
+		this.drawCircle(cx, cy, radius, color, true);
+	}
+	
+	public void drawCircleOutline(float cx, float cy, float radius, Color color){
+		this.drawCircle(cx, cy, radius, color, false);
+	}
+    
+	private void drawCircle(float cx, float cy, float radius, Color color, boolean filled) {
 		float increment = 0.075f;
 		int iterations = (int)Math.ceil(2*Math.PI/increment);
 		
@@ -126,7 +134,38 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 		}
 
 		layer.numVertices += points;
-		this.getLayerManager().addRenderingData(GL_LINE_LOOP, points);
+		
+		if(filled){
+			this.getLayerManager().addRenderingData(GL_TRIANGLE_FAN, points);
+		}else{
+			this.getLayerManager().addRenderingData(GL_LINE_LOOP, points);
+		}
+	}
+	
+	public void drawRectOutline(float x, float y, float width, float height, Color color){
+		Layer layer = getLayerManager().getActiveLayer();
+		
+		if(layer.vertices.remaining() < 4*7){
+			flush();
+		}
+	
+		float r = color.getRed();
+		float g = color.getGreen();
+		float b = color.getBlue();
+		
+		Vector2f tl = new Vector2f(x-width/2,y+height/2);
+		Vector2f bl = new Vector2f(x-width/2,y-height/2);
+		Vector2f tr = new Vector2f(x+width/2, y+height/2);
+		Vector2f br = new Vector2f(x+width/2, y-height/2);
+		
+		layer.vertices.put(bl.x).put(bl.y).put(r).put(g).put(b).put(0).put(0);
+		layer.vertices.put(br.x).put(br.y).put(r).put(g).put(b).put(0).put(0);
+		layer.vertices.put(tr.x).put(tr.y).put(r).put(g).put(b).put(0).put(0);		
+		layer.vertices.put(tl.x).put(tl.y).put(r).put(g).put(b).put(0).put(0);
+		
+		layer.numVertices += 4;
+		
+		getLayerManager().addRenderingData(GL_LINE_LOOP, 4);
 	}
 	
 	public void drawRect(float x, float y, float width, float height, Color color){
