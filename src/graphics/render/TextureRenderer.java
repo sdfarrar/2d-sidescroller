@@ -1,19 +1,10 @@
-package graphics;
+package graphics.render;
 
 import graphics.opengl.Texture;
 
 import java.awt.Color;
 
-public interface Renderer {
-	public void init();
-	public void dispose();
-
-	public void clear();
-	public void begin();
-	public void end();
-	
-	public void flush();
-	
+public interface TextureRenderer {
 	public void drawTexture(Texture texture, float x, float y);
 	public void drawTexture(Texture texture, float x, float y, Color c);
 	public void drawTexture(Texture texture, float x, float y, float width, float height);
