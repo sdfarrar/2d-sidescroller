@@ -142,6 +142,20 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
 		}
 	}
 	
+	public void drawDebugRectOutline(float x, float y, float width, float height, Color color){
+		drawRectOutline(x, y, width, height, color);
+		
+		float x1 = x - width/2;
+		float y1 = y - height/2;
+		float x2 = x1 + width;
+		float y2 = y1 + height;
+		drawLine(x1, y1, x2, y2, color);
+		
+		y1 = y + height/2;
+		y2 = y1 - height;
+		drawLine(x1, y1, x2, y2, color);
+	}
+	
 	public void drawRectOutline(float x, float y, float width, float height, Color color){
 		Layer layer = getLayerManager().getActiveLayer();
 		
