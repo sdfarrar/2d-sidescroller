@@ -11,16 +11,17 @@ public abstract class AbstractEntity implements Entity{
 	protected Rectangle2D hitbox;
 	
 	protected float height, width;	
-	protected Color color;
+	protected Color color, debugColor;
 	
-	public AbstractEntity(float x, float y, float width, float height){
-		this.previousPosition = new Vector2f(x, y);
-		this.position = new Vector2f(x, y);
+	public AbstractEntity(float cx, float cy, float width, float height){
+		this.previousPosition = new Vector2f(cx, cy);
+		this.position = new Vector2f(cx, cy);
 		this.width = width;
 		this.height = height;
-		this.hitbox = new Rectangle2D.Float(x, y, width, height);
+		this.hitbox = new Rectangle2D.Float(cx, cy, width, height);
 		
 		color = Color.WHITE;
+		debugColor = Color.GREEN;
 	}
 	
 	public abstract void init();
