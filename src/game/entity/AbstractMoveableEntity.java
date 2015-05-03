@@ -23,4 +23,12 @@ public abstract class AbstractMoveableEntity extends AbstractEntity implements M
 	public float getDy(){
 		return velocity.y;
 	}
+	
+	public void setVelocity(Vector2f vel){
+		this.velocity = vel;
+	}
+	
+	public Vector2f getVelocity(){
+		return this.velocity;
+	}
 }

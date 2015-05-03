@@ -7,6 +7,7 @@ import math.Vector3f;
 public class Camera {
 	private Matrix4f ortho;
 	private Vector3f position;
+	private AbstractMoveableEntity entity;
 	
 	private int screenWidth, screenHeight;
 
@@ -36,12 +37,25 @@ public class Camera {
     	ortho = Matrix4f.orthographic(left, right, bottom, top, -1f, 1f);
 	}
 	
+	public void centerCameraOn(float cx, float cy){
+		float left = cx - screenWidth/2;
+		float right = cx + screenWidth/2;
+		float bottom = cy - screenHeight/2;
+		float top = cy + screenHeight/2;
+		ortho = Matrix4f.orthographic(left, right, bottom, top, -1f, 1f);
+	}
+	
 	public void followEntity(AbstractMoveableEntity e){
-		//TODO implement
+		this.entity = e;
 	}
 	
 	public Matrix4f getOrthoMatrix(){
-		return this.ortho;
+		if(entity==null){
+			return this.ortho;
+		}else{
+			this.centerCameraOn(entity.getPosition().x, entity.getPosition().y);			
+			return this.ortho;
+		}
 	}
 	
 	public int getScreenWidth(){

@@ -447,4 +447,8 @@ public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	public boolean isCameraEnabled(){
 		return useCamera;
 	}
+	
+	public Camera getCamera(){
+		return camera;
+	}
 }
