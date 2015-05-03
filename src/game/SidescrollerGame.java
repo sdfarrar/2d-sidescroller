@@ -6,19 +6,24 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
-import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.*;
 import game.core.VariableTimestepGame;
 import game.input.KeyInput;
+import game.input.MouseInput;
 import graphics.opengl.Texture;
 
 import java.awt.Color;
 
+import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 
 public class SidescrollerGame extends VariableTimestepGame{
 	
 	private GLFWKeyCallback keycallback;
+	private GLFWMouseButtonCallback mBtnCallback;
+	private GLFWCursorPosCallback mousePosCallback;
 	private Texture texture;
 	
 	public SidescrollerGame() {
@@ -30,6 +35,11 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 		long id = glfwGetCurrentContext();
 		glfwSetKeyCallback(id, keycallback = new KeyInput());
+		
+		MouseInput m = new MouseInput();
+		glfwSetMouseButtonCallback(id, mBtnCallback = m.getButtonCallback());
+		glfwSetCursorPosCallback(id, mousePosCallback = m.getPositionCallback());
+		
 		texture = Texture.loadTexture("res/default_tex.png");
 	}
 
@@ -62,6 +72,8 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void disposeGameObjects() {
+		mBtnCallback.release();
+		mousePosCallback.release();
 		keycallback.release();
 		texture.delete();
 	}
@@ -84,6 +96,13 @@ public class SidescrollerGame extends VariableTimestepGame{
 			long id = glfwGetCurrentContext();
 			window.close(id);
 		}
+		if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_1)){
+			System.out.println("mouse1");
+		}
+		if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_2)){
+			float [] pos = MouseInput.getMousePosition();
+			System.out.println(pos[0] + ", " + pos[1]);
+		}
 	}
 
 	@Override
@@ -100,11 +119,14 @@ public class SidescrollerGame extends VariableTimestepGame{
 			uc = Color.yellow;
 		else if(ups<30)
 			uc = Color.red;
+		
+		float [] pos = MouseInput.getMousePosition();
 			
 		renderer.setActiveLayer(3);
 		renderer.disableCamera();
 		renderer.drawDebugText("FPS:"+timer.getFPS(), 950, 745, fc);
 		renderer.drawDebugText("UPS:"+timer.getUPS(), 950, 725, uc);
+		renderer.drawDebugText("Mouse: " + pos[0] + ", " + pos[1], 10, 745, Color.white);
 		renderer.enableCamera();
 	}
 
