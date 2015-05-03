@@ -1,5 +1,6 @@
 package graphics;
 
+import game.entity.AbstractMoveableEntity;
 import math.Matrix4f;
 import math.Vector3f;
 
@@ -33,6 +34,10 @@ public class Camera {
 		float top = position.y + screenHeight;
 
     	ortho = Matrix4f.orthographic(left, right, bottom, top, -1f, 1f);
+	}
+	
+	public void followEntity(AbstractMoveableEntity e){
+		//TODO implement
 	}
 	
 	public Matrix4f getOrthoMatrix(){

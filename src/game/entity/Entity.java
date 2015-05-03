@@ -1,49 +1,16 @@
 package game.entity;
 
 import graphics.render.LayeredRenderer;
-
-import java.awt.Color;
-
 import math.Vector2f;
 
-public abstract class Entity{
-	protected Vector2f previousPosition;
-	protected Vector2f position;
-	protected Vector2f direction;
+public interface Entity {
 	
-	protected float height, width;
+	public void input();
+	public void update(float delta);
+	public void render(LayeredRenderer renderer, float alpha);
+	public boolean collidesWith(Entity entity);	
 	
-	protected Color color;
-	
-	public Entity(float x, float y, float width, float height){
-		this.previousPosition = new Vector2f(x, y);
-		this.position = new Vector2f(x, y);
-		this.width = width;
-		this.height = height;
-		
-		color = Color.WHITE;
-	}
-	
-	public abstract void init();
-	public abstract void input();
-	public abstract void update(float delta);
-	public abstract void render(LayeredRenderer renderer, float alpha);
-	public abstract void dispose();
-	
-	public float getX(){
-		return position.x;
-	}
-	
-	public float getY(){
-		return position.y;
-	}
-	
-	public float getWidth(){
-		return width;
-	}
-	
-	public float getHeight(){
-		return height;
-	}
-	
+	public float getWidth();
+	public float getHeight();
+	public Vector2f getPosition();
 }

@@ -1,13 +1,8 @@
 package game;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.glfwGetCurrentContext;
 import static org.lwjgl.glfw.GLFW.*;
 import game.core.VariableTimestepGame;
+import game.entity.Block;
 import game.input.KeyInput;
 import game.input.MouseInput;
 import graphics.opengl.Texture;
@@ -25,6 +20,8 @@ public class SidescrollerGame extends VariableTimestepGame{
 	private GLFWMouseButtonCallback mBtnCallback;
 	private GLFWCursorPosCallback mousePosCallback;
 	private Texture texture;
+	
+	private Block block;
 	
 	public SidescrollerGame() {
 		super();
@@ -45,7 +42,7 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void initGameObjects() {
-		
+		block = new Block(150, 200, 25, 25);
 	}
 
 	@Override
@@ -66,7 +63,8 @@ public class SidescrollerGame extends VariableTimestepGame{
 		renderer.drawRectOutline(500, 300, 150, 75, Color.cyan);
 		renderer.setActiveLayer(1);
 		renderer.drawRect(500, 100, 15, 75, new Color(255,162,0));
-		renderer.setActiveLayer(0);
+		renderer.setActiveLayer(2);
+		block.render(renderer, alpha);
 //		renderer.drawRect(500, 75, 50, 50, Color.red);
 	}
 
@@ -97,11 +95,10 @@ public class SidescrollerGame extends VariableTimestepGame{
 			window.close(id);
 		}
 		if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_1)){
-			System.out.println("mouse1");
+			
 		}
 		if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_2)){
-			float [] pos = MouseInput.getMousePosition();
-			System.out.println(pos[0] + ", " + pos[1]);
+			
 		}
 	}
 
