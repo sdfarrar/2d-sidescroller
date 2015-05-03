@@ -1,5 +1,6 @@
 package graphics;
 
+import game.entity.AbstractEntity;
 import game.entity.AbstractMoveableEntity;
 import math.Matrix4f;
 import math.Vector3f;
@@ -7,7 +8,7 @@ import math.Vector3f;
 public class Camera {
 	private Matrix4f ortho;
 	private Vector3f position;
-	private AbstractMoveableEntity entity;
+	private AbstractEntity entity;
 	
 	private int screenWidth, screenHeight;
 
@@ -45,7 +46,7 @@ public class Camera {
 		ortho = Matrix4f.orthographic(left, right, bottom, top, -1f, 1f);
 	}
 	
-	public void followEntity(AbstractMoveableEntity e){
+	public void followEntity(AbstractEntity e){
 		this.entity = e;
 	}
 	
