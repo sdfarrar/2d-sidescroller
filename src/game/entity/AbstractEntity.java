@@ -27,6 +27,10 @@ public abstract class AbstractEntity implements Entity{
 	public abstract void dispose();
 	
 	public boolean collidesWith(Entity other){
+		return hitbox.intersects(other.getPosition().x, other.getPosition().y, other.getWidth(), other.getHeight());
+	}
+	
+	public boolean contains(Entity other){
 		return hitbox.contains(other.getPosition().x, other.getPosition().y, other.getWidth(), other.getHeight());
 	}
 
