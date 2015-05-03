@@ -21,7 +21,7 @@ import math.Vector2f;
 import text.Font;
 
 
-public class LayeredRenderer extends AbstractLayeredRenderer {
+public class LayeredRenderer extends AbstractLayeredRenderer implements TextRenderer, ShapeRenderer{
 
 	private Font font, debugFont;
 		
@@ -50,7 +50,7 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 	public void flush() {
 		int count = 0;
 		for(Layer layer : getLayerManager().getLayers()){
-			System.out.println("flushing { layer: " + (count++) + ", vertices: " + layer.numVertices + " }");
+			//System.out.println("flushing { layer: " + (count++) + ", vertices: " + layer.numVertices + " }");
 			if (layer.numVertices > 0) {				
 				layer.vertices.flip();
 				

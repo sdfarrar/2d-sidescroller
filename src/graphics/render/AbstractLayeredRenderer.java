@@ -28,7 +28,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class AbstractLayeredRenderer {
+public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	public static final int BUFFER_SIZE = 4096;
 	
 	private static boolean drawing;
