@@ -33,6 +33,8 @@ public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	
 	private static boolean drawing;
 	
+	private RenderingLayerManager layerManager;
+	
 	private final int numLayers;
 	private boolean useCamera;
 
@@ -42,8 +44,7 @@ public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	protected VertexArrayObject vao;
 	protected VertexBufferObject vbo;	
 
-	protected Camera camera;
-	private RenderingLayerManager layerManager;
+	protected Camera camera;	
 	
 	public AbstractLayeredRenderer(int numOfLayers){
 		this.numLayers = numOfLayers;

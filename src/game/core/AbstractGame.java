@@ -67,6 +67,7 @@ public abstract class AbstractGame {
 	}
 	
 	public void update(float delta){
+		renderer.update(delta);
 		updateGameObjects(delta);
 	}	
 	

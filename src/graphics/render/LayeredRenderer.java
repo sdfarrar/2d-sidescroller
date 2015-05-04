@@ -40,6 +40,10 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
 		debugFont = new Font(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 16), true);
 	}
 	
+	public void update(float delta) {
+		camera.update(delta);
+	}
+	
 	public void dispose(){
 		super.dispose();
 		font.dispose();
@@ -295,8 +299,6 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
      */
     public void drawDebugText(CharSequence text, float x, float y, Color c) {
         debugFont.drawText(this, text, x, y, c);
-    }
-
-	
+    }	
 
 }
