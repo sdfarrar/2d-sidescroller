@@ -24,6 +24,7 @@
 package math;
 
 import java.nio.FloatBuffer;
+
 import org.lwjgl.BufferUtils;
 
 /**
@@ -187,5 +188,9 @@ public class Vector3f {
         buffer.put(x).put(y).put(z);
         buffer.flip();
         return buffer;
+    }
+    
+    public String toString(){
+    	return "Vector2f(" + this.x + "," + this.y + "," + this.z + ")";
     }
 }
