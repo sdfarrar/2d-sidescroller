@@ -24,6 +24,7 @@
 package math;
 
 import java.nio.FloatBuffer;
+
 import org.lwjgl.BufferUtils;
 
 /**
@@ -181,5 +182,12 @@ public class Matrix2f {
         buffer.put(m01).put(m11);
         buffer.flip();
         return buffer;
+    }
+    
+    public String toString(){
+    	String s = "";
+    	s += m00 + " " + m01 + '\n';
+    	s += m10 + " " + m11 + '\n';
+    	return s;
     }
 }

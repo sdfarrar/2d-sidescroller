@@ -28,10 +28,12 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class AbstractLayeredRenderer {
+public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	public static final int BUFFER_SIZE = 4096;
 	
 	private static boolean drawing;
+	
+	private RenderingLayerManager layerManager;
 	
 	private final int numLayers;
 	private boolean useCamera;
@@ -42,8 +44,7 @@ public abstract class AbstractLayeredRenderer {
 	protected VertexArrayObject vao;
 	protected VertexBufferObject vbo;	
 
-	protected Camera camera;
-	private RenderingLayerManager layerManager;
+	protected Camera camera;	
 	
 	public AbstractLayeredRenderer(int numOfLayers){
 		this.numLayers = numOfLayers;
@@ -446,5 +447,9 @@ public abstract class AbstractLayeredRenderer {
 	
 	public boolean isCameraEnabled(){
 		return useCamera;
+	}
+	
+	public Camera getCamera(){
+		return camera;
 	}
 }

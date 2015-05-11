@@ -2,8 +2,8 @@ package graphics.render;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import graphics.Camera;
@@ -21,7 +21,7 @@ import math.Vector2f;
 import text.Font;
 
 
-public class LayeredRenderer extends AbstractLayeredRenderer {
+public class LayeredRenderer extends AbstractLayeredRenderer implements TextRenderer, ShapeRenderer{
 
 	private Font font, debugFont;
 		
@@ -40,6 +40,10 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 		debugFont = new Font(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.PLAIN, 16), true);
 	}
 	
+	public void update(float delta) {
+		camera.update(delta);
+	}
+	
 	public void dispose(){
 		super.dispose();
 		font.dispose();
@@ -50,7 +54,7 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 	public void flush() {
 		int count = 0;
 		for(Layer layer : getLayerManager().getLayers()){
-			System.out.println("flushing { layer: " + (count++) + ", vertices: " + layer.numVertices + " }");
+			//System.out.println("flushing { layer: " + (count++) + ", vertices: " + layer.numVertices + " }");
 			if (layer.numVertices > 0) {				
 				layer.vertices.flip();
 				
@@ -140,6 +144,20 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
 		}else{
 			this.getLayerManager().addRenderingData(GL_LINE_LOOP, points);
 		}
+	}
+	
+	public void drawDebugRectOutline(float x, float y, float width, float height, Color color){
+		drawRectOutline(x, y, width, height, color);
+		
+		float x1 = x - width/2;
+		float y1 = y - height/2;
+		float x2 = x1 + width;
+		float y2 = y1 + height;
+		drawLine(x1, y1, x2, y2, color);
+		
+		y1 = y + height/2;
+		y2 = y1 - height;
+		drawLine(x1, y1, x2, y2, color);
 	}
 	
 	public void drawRectOutline(float x, float y, float width, float height, Color color){
@@ -281,8 +299,6 @@ public class LayeredRenderer extends AbstractLayeredRenderer {
      */
     public void drawDebugText(CharSequence text, float x, float y, Color c) {
         debugFont.drawText(this, text, x, y, c);
-    }
-
-	
+    }	
 
 }
