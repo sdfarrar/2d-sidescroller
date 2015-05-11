@@ -2,8 +2,8 @@ package graphics.render;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import graphics.Camera;

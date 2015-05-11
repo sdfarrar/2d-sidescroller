@@ -92,6 +92,10 @@ public class Camera {
 		return new Vector3f(focus.x, focus.y, focus.z);
 	}
 	
+	public Vector2f getResolution(){
+		return new Vector2f(screenWidth, screenHeight);
+	}
+	
 	/**
 	 * Sets <code>position</code> to the center of the screen 
 	 * @param left x coordinate of the left side of the screen
