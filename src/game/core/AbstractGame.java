@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
+import physics.PhysicsEngine;
+
 public abstract class AbstractGame {
 	public static final int TARGET_FPS = 120;
     public static final int TARGET_UPS = 30;
@@ -21,6 +23,7 @@ public abstract class AbstractGame {
 	protected Timer timer;
 	protected Window window;
 	protected LayeredRenderer renderer;
+	protected PhysicsEngine physics;
 	protected boolean running;
 	
 	private GLFWErrorCallback errorCallback;
@@ -28,6 +31,7 @@ public abstract class AbstractGame {
 	public AbstractGame(){
 		timer = new Timer();
 		renderer = new LayeredRenderer(LAYERS);
+		physics = new PhysicsEngine();
 	}
 	
 	public void start(){

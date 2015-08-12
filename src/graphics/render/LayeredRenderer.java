@@ -97,9 +97,9 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
 		if(layer.vertices.remaining()< 2*7)
 			flush();
 		
-		float r = color.getRed();
-		float g = color.getGreen();
-		float b = color.getBlue();
+		float r = color.getRed()/255f;
+		float g = color.getGreen()/255f;
+		float b = color.getBlue()/255f;
 		
 		layer.vertices.put(x1).put(y1).put(r).put(g).put(b).put(0).put(0);
 		layer.vertices.put(x2).put(y2).put(r).put(g).put(b).put(0).put(0);
@@ -125,9 +125,9 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
 		if(layer.vertices.remaining()< 7*iterations)
 			flush();
 
-		float r = color.getRed();
-		float g = color.getGreen();
-		float b = color.getBlue();
+		float r = color.getRed()/255f;
+		float g = color.getGreen()/255f;
+		float b = color.getBlue()/255f;
 		
 		int points = 0;
 		for(float i=0; i<2*Math.PI; i+=increment){
@@ -167,9 +167,9 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
 			flush();
 		}
 	
-		float r = color.getRed();
-		float g = color.getGreen();
-		float b = color.getBlue();
+		float r = color.getRed()/255f;
+		float g = color.getGreen()/255f;
+		float b = color.getBlue()/255f;
 		
 		Vector2f tl = new Vector2f(x-width/2,y+height/2);
 		Vector2f bl = new Vector2f(x-width/2,y-height/2);
@@ -193,9 +193,9 @@ public class LayeredRenderer extends AbstractLayeredRenderer implements TextRend
 			flush();
 		}
 	
-		float r = color.getRed();
-		float g = color.getGreen();
-		float b = color.getBlue();
+		float r = color.getRed()/255f;
+		float g = color.getGreen()/255f;
+		float b = color.getBlue()/255f;
 		
 		Vector2f tl = new Vector2f(x-width/2,y+height/2);
 		Vector2f bl = new Vector2f(x-width/2,y-height/2);

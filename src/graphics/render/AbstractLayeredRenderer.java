@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import game.entity.AbstractEntity;
 import graphics.Camera;
 import graphics.opengl.Shader;
 import graphics.opengl.ShaderProgram;
@@ -47,6 +48,7 @@ public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	protected Camera camera;	
 	
 	public AbstractLayeredRenderer(int numOfLayers){
+		this.useCamera = true;
 		this.numLayers = numOfLayers;
 		layerManager = new RenderingLayerManager(numLayers);
 	}
@@ -451,5 +453,13 @@ public abstract class AbstractLayeredRenderer implements TextureRenderer{
 	
 	public Camera getCamera(){
 		return camera;
+	}
+	
+	public void panCameraTo(AbstractEntity e, int speed){
+		camera.panCameraTo(e, speed);
+	}
+	
+	public void followEntity(AbstractEntity e){
+		camera.followEntity(e);
 	}
 }

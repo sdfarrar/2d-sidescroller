@@ -17,6 +17,7 @@ public class Camera {
 	private int panSpeed;
 
 	public Camera(float screenWidth, float screenHeight){
+//		this(0, screenWidth, 0, screenHeight);
 		this(0, screenWidth, 0, screenHeight);
 	}
 	

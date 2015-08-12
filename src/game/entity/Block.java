@@ -1,9 +1,11 @@
 package game.entity;
 
 
+import graphics.render.LayeredRenderer;
+
 import java.awt.Color;
 
-import graphics.render.LayeredRenderer;
+import physics.PhysicsEngine;
 
 public class Block extends AbstractEntity {
 
@@ -17,7 +19,7 @@ public class Block extends AbstractEntity {
 	}
 
 	@Override
-	public void update(float delta) {
+	public void update(PhysicsEngine physics, float delta) {
 
 	}
 
@@ -29,13 +31,12 @@ public class Block extends AbstractEntity {
 	@Override
 	public void debugRender(LayeredRenderer renderer, float alpha){
 		renderer.drawDebugRectOutline(position.x, position.y, width, height, debugColor);
-		//this.renderHitbox(renderer, alpha);
+		this.renderHitbox(renderer, alpha);
 	}
 	
 	@Override 
 	public void renderHitbox(LayeredRenderer renderer, float alpha){
-		float x = (float)hitbox.getX(), y = (float)hitbox.getY(), width = (float)hitbox.getWidth(), height = (float)hitbox.getHeight();
-		renderer.drawRectOutline(x, y, width, height, Color.RED);
+		renderer.drawRectOutline(hitbox.getCenter().x, hitbox.getCenter().y, hitbox.getDimensions().x, hitbox.getDimensions().y, Color.RED);
 	}
 
 	@Override
@@ -48,6 +49,12 @@ public class Block extends AbstractEntity {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void resolveCollision(AbstractEntity e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
