@@ -15,4 +15,5 @@ public interface Entity {
 	public float getWidth();
 	public float getHeight();
 	public Vector2f getPosition();
+	public Hitbox getHitbox();
 }

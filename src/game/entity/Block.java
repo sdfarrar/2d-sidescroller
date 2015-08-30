@@ -34,7 +34,7 @@ public class Block extends AbstractEntity {
 	
 	@Override 
 	public void renderHitbox(LayeredRenderer renderer, float alpha){
-		float x = (float)hitbox.getX(), y = (float)hitbox.getY(), width = (float)hitbox.getWidth(), height = (float)hitbox.getHeight();
+		float x = (float)hitbox.getCenter().x, y = (float)hitbox.getCenter().y, width = (float)hitbox.getDimensions().x, height = (float)hitbox.getDimensions().y;
 		renderer.drawRectOutline(x, y, width, height, Color.RED);
 	}
 

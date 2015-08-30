@@ -1,20 +1,19 @@
 package game;
 
 import static org.lwjgl.glfw.GLFW.*;
-import game.core.VariableTimestepGame;
-import game.entity.Block;
-import game.entity.Player;
-import game.input.KeyInput;
-import game.input.MouseInput;
-import graphics.opengl.Texture;
-
 import java.awt.Color;
-
-import math.Vector2f;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
+
+import game.core.VariableTimestepGame;
+import game.entity.Player;
+import game.input.KeyInput;
+import game.input.MouseInput;
+import game.world.World;
+import graphics.opengl.Texture;
+import math.Vector2f;
 
 
 public class SidescrollerGame extends VariableTimestepGame{
@@ -24,12 +23,15 @@ public class SidescrollerGame extends VariableTimestepGame{
 	private GLFWCursorPosCallback mousePosCallback;
 	private Texture texture;
 	
-	private Block floor;
-	private Player player;
-	private Player player2;
+	private World world;
+	
+	private boolean showStats;
 	
 	public SidescrollerGame() {
 		super();
+		
+		showStats = true;
+		
 	}
 	
 	public void init(){
@@ -47,25 +49,19 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void initGameObjects() {
-		player = new Player(250, 400, 55, 115);
-		player2 = new Player(1250, 400, 55, 115);
-		floor = new Block(1000, 50, 2000, 50);
-		//renderer.getCamera().followEntity(player);
-		//renderer.getCamera().followEntity(floor);
+		world = new World(new Player(250, 400, 55, 115));
 	}
 
 	@Override
 	public void updateGameObjects(float delta) {
-		player.update(delta);
+	  world.update(delta);
 	}
 
 	@Override
 	public void renderGameObjects(float alpha) {		
 		texture.bind(); // binds a simple texture to be used for drawing
 		renderer.setActiveLayer(1);		
-		floor.debugRender(renderer, alpha);
-		player.debugRender(renderer, alpha);
-		player2.debugRender(renderer, alpha);		
+		world.render(renderer, alpha);		
 	}
 
 	@Override
@@ -78,43 +74,48 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void input() {
-		Vector2f playerVel = new Vector2f();
-		if(KeyInput.isKeyDown(GLFW_KEY_D)){
-			playerVel = playerVel.add(new Vector2f(5.0f, 0.0f));
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_A)){
-			playerVel = playerVel.add(new Vector2f(-5.0f, 0.0f));
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_W)){
-			playerVel = playerVel.add(new Vector2f(0.0f, 5.0f));
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_S)){
-			playerVel = playerVel.add(new Vector2f(0.0f, -5.0f));
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_1)){
-			renderer.getCamera().panCameraTo(player, 5);
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_2)){
-			renderer.getCamera().panCameraTo(player2, 5);
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_3)){
-			renderer.getCamera().followEntity(player);
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_4)){
-			renderer.getCamera().followEntity(player2);
-		}
-		if(KeyInput.isKeyDown(GLFW_KEY_ESCAPE)){
-			long id = glfwGetCurrentContext();
-			window.close(id);
-		}
-		if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_1)){
-			
-		}
-		if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_2)){
-			
-		}
-		
-		player.setVelocity(playerVel);
+	  world.input();  
+    
+    if(KeyInput.isKeyDown(GLFW_KEY_G) && !KeyInput.isKeyToggled(GLFW_KEY_G)){
+      KeyInput.setKeyToggled(GLFW_KEY_G);
+      //physics.toggleGravity();
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_F1) && !KeyInput.isKeyToggled(GLFW_KEY_F1)){
+      KeyInput.setKeyToggled(GLFW_KEY_F1);
+      world.toggleWireframes();
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_F2) && !KeyInput.isKeyToggled(GLFW_KEY_F2)){
+      KeyInput.setKeyToggled(GLFW_KEY_F2);
+      showStats = !showStats;
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_1)){
+      renderer.panCameraTo(world.getPlayer(), 5);
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_2)){
+      //renderer.panCameraTo(player2, 5);
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_3)){
+      renderer.followEntity(world.getPlayer());
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_4)){
+      //renderer.followEntity(player2);
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_UP)){
+      world.getPlayer().increaseSpeed();
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_DOWN)){
+      world.getPlayer().decreaseSpeed();
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_ESCAPE)){
+      long id = glfwGetCurrentContext();
+      window.close(id);
+    }
+    if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_1)){
+      
+    }
+    if(MouseInput.isButtonPressed(GLFW_MOUSE_BUTTON_2)){
+      
+    }
 	}
 
 	@Override
@@ -140,7 +141,7 @@ public class SidescrollerGame extends VariableTimestepGame{
 		renderer.drawDebugText("FPS:"+timer.getFPS(), 950, 745, fc);
 		renderer.drawDebugText("UPS:"+timer.getUPS(), 950, 725, uc);
 		renderer.drawDebugText("Mouse: " + mousePos[0] + ", " + mousePos[1], 10, 745, Color.white);
-		renderer.drawDebugText("Player: " + player.getPosition().x + ", " + player.getPosition().y, 10, 725, Color.white);
+		renderer.drawDebugText("Player: " + world.getPlayer().getPosition().x + ", " + world.getPlayer().getPosition().y, 10, 725, Color.white);
 		renderer.drawDebugText("Camera: " + camPos[0] + ", " + camPos[1], 10, 705, Color.white);
 		renderer.enableCamera();
 	}

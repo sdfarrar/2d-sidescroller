@@ -1,9 +1,12 @@
 package game.entity;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import java.awt.Color;
 
 import math.Vector2f;
 import graphics.render.LayeredRenderer;
+import game.input.KeyInput;
 
 public class Player extends AbstractMoveableEntity {
 
@@ -14,14 +17,27 @@ public class Player extends AbstractMoveableEntity {
 
 	@Override
 	public void input() {
-		// TODO Auto-generated method stub
-
+	  Vector2f force = new Vector2f();
+    if(KeyInput.isKeyDown(GLFW_KEY_D)){     
+      force = force.add(new Vector2f(speed, 0.0f));
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_A)){
+      force = force.add(new Vector2f(-speed, 0.0f));
+    }
+    if(KeyInput.isKeyDown(GLFW_KEY_W)){
+      force = force.add(new Vector2f(0.0f, speed));
+    } 
+    if(KeyInput.isKeyDown(GLFW_KEY_S)){
+      force = force.add(new Vector2f(0.0f, -speed));
+    }
+    this.setVelocity(force);
 	}
 
 	@Override
 	public void update(float delta) {
 		previousPosition = position;
 		position = position.add(velocity);
+		rebuildHitbox();
 	}
 
 	@Override
@@ -55,5 +71,15 @@ public class Player extends AbstractMoveableEntity {
 		// TODO Auto-generated method stub
 
 	}
+	
+private float speed = 3.5f;
+  
+  public void increaseSpeed(){
+    speed+=.2f;
+  }
+  
+  public void decreaseSpeed(){
+    speed-=.2f;
+  }
 
 }

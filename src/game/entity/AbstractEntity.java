@@ -8,7 +8,7 @@ import math.Vector2f;
 public abstract class AbstractEntity implements Entity{
 	protected Vector2f previousPosition;
 	protected Vector2f position;
-	protected Rectangle2D hitbox;
+	protected Hitbox hitbox;
 	
 	protected float height, width;	
 	protected Color color, debugColor;
@@ -18,7 +18,7 @@ public abstract class AbstractEntity implements Entity{
 		this.position = new Vector2f(cx, cy);
 		this.width = width;
 		this.height = height;
-		this.hitbox = new Rectangle2D.Float(cx, cy, width, height);
+		rebuildHitbox();
 		
 		color = Color.WHITE;
 		debugColor = Color.GREEN;
@@ -27,12 +27,17 @@ public abstract class AbstractEntity implements Entity{
 	public abstract void init();
 	public abstract void dispose();
 	
+	protected void rebuildHitbox(){
+    hitbox = new Hitbox(position, new Vector2f(width, height));
+  }
+	
 	public boolean collidesWith(Entity other){
-		return hitbox.intersects(other.getPosition().x, other.getPosition().y, other.getWidth(), other.getHeight());
+		return hitbox.intersects(other.getHitbox());
 	}
 	
 	public boolean contains(Entity other){
-		return hitbox.contains(other.getPosition().x, other.getPosition().y, other.getWidth(), other.getHeight());
+		return false;
+	  //return hitbox.contains(other.getPosition().x, other.getPosition().y, other.getWidth(), other.getHeight());
 	}
 
 	public Vector2f getPosition(){
@@ -55,4 +60,7 @@ public abstract class AbstractEntity implements Entity{
 		this.color = c;
 	}
 	
+	public Hitbox getHitbox(){
+	  return this.hitbox;
+	}
 }
