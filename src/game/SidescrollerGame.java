@@ -120,6 +120,8 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void renderText() {
+	  if(!showStats) return;
+	  
 		Color fc = Color.green, uc = Color.green;
 		int fps = timer.getFPS();
 		if(fps<60)
