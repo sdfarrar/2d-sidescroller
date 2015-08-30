@@ -140,7 +140,7 @@ public class SidescrollerGame extends VariableTimestepGame{
 		renderer.drawDebugText("FPS:"+timer.getFPS(), 950, 745, fc);
 		renderer.drawDebugText("UPS:"+timer.getUPS(), 950, 725, uc);
 		renderer.drawDebugText("Mouse: " + mousePos[0] + ", " + mousePos[1], 10, 745, Color.white);
-		renderer.drawDebugText("Player: " + player.getPosition().x + ", " + player.getPosition().x, 10, 725, Color.white);
+		renderer.drawDebugText("Player: " + player.getPosition().x + ", " + player.getPosition().y, 10, 725, Color.white);
 		renderer.drawDebugText("Camera: " + camPos[0] + ", " + camPos[1], 10, 705, Color.white);
 		renderer.enableCamera();
 	}
