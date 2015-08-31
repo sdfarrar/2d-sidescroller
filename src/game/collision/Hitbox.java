@@ -1,4 +1,4 @@
-package game.entity;
+package game.collision;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

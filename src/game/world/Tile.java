@@ -2,8 +2,8 @@ package game.world;
 
 import java.awt.Color;
 
+import game.collision.Hitbox;
 import game.entity.AbstractMoveableEntity;
-import game.entity.Hitbox;
 import graphics.opengl.Texture;
 import graphics.render.LayeredRenderer;
 import math.Vector2f;

@@ -1,5 +1,6 @@
 package game.entity;
 
+import game.collision.Hitbox;
 import graphics.render.LayeredRenderer;
 import math.Vector2f;
 

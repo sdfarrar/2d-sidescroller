@@ -3,6 +3,7 @@ package game.entity;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
+import game.collision.Hitbox;
 import math.Vector2f;
 
 public abstract class AbstractEntity implements Entity{
