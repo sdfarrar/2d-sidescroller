@@ -147,6 +147,14 @@ public class Vector2f {
     }
 
     /**
+     * Gets the normal of this vector
+     * @return Normal vector of this vector
+     */
+    public Vector2f getNormal(){
+      return new Vector2f(this.y, -this.x);
+    }
+    
+    /**
      * Calculates a linear interpolation between this vector with another
      * vector.
      *
@@ -177,4 +185,5 @@ public class Vector2f {
     public String toString(){
     	return "Vector2f(" + this.x + "," + this.y + ")";
     }
+
 }
