@@ -1,8 +1,8 @@
 package game.entity;
 
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
 
+import game.collision.AABB;
 import game.collision.Hitbox;
 import math.Vector2f;
 
@@ -10,6 +10,7 @@ public abstract class AbstractEntity implements Entity{
 	protected Vector2f previousPosition;
 	protected Vector2f position;
 	protected Hitbox hitbox;
+	protected AABB aabb;
 	
 	protected float height, width;	
 	protected Color color, debugColor;
@@ -30,6 +31,7 @@ public abstract class AbstractEntity implements Entity{
 	
 	protected void rebuildHitbox(){
     hitbox = new Hitbox(position, new Vector2f(width, height));
+    aabb = new AABB(position, new Vector2f(width, height));
   }
 	
 	public boolean collidesWith(Entity other){
@@ -63,5 +65,9 @@ public abstract class AbstractEntity implements Entity{
 	
 	public Hitbox getHitbox(){
 	  return this.hitbox;
+	}
+	
+	public AABB getAABB(){
+	  return this.aabb;
 	}
 }

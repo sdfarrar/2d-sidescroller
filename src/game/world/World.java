@@ -3,6 +3,8 @@ package game.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.collision.MinimumTranslationVector;
+import game.collision.SAT;
 import game.entity.AbstractEntity;
 import game.entity.Player;
 import graphics.render.LayeredRenderer;
@@ -37,7 +39,7 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
           //tiles[i][j] = new Tile(x,y,TileType.SKY); 
         }
         
-        if(j==3 && (i>=7 && i<=12)){
+        if(j==5 && (i>=7 && i<=12)){
           type=TileType.PLATFORM;
         }
         tiles[i][j] = new Tile(x,y,type);
@@ -58,11 +60,13 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
     int leftTile = (int)(Math.floor((float)player.getHitbox().getLeftBound()/Tile.WIDTH));
     int rightTile = (int)(Math.ceil((float)player.getHitbox().getRightBound()/Tile.WIDTH)) - 1;
     
-    System.out.println("left: " + leftTile + ", right: " + rightTile + ", bottom: " + botTile + ", top: " + topTile);
+    // prints out tiles to check for collisions
+    //System.out.println("left: " + leftTile + ", right: " + rightTile + ", bottom: " + botTile + ", top: " + topTile);
     
     for(int i=0; i<WORLD_WIDTH/Tile.WIDTH; i++){
       for(int j=0; j<WORLD_HEIGHT/Tile.HEIGHT; j++){
         tiles[i][j].checkCollision(false);
+        tiles[i][j].setIsColliding(false);
       }
     }
     
@@ -71,6 +75,17 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
         Tile tile = tiles[i][j];
         tile.checkCollision(true); // for debug drawing purposes
         //TODO collision resolution
+        if(!tile.getTileType().equals(TileType.SKY)){
+          MinimumTranslationVector mtv = SAT.checkCollision(player.getAABB(), tile.getAABB());
+          if(mtv.getDistance()==0.0f){ // no collision
+            tile.setIsColliding(false);
+          }else{
+            tile.setIsColliding(true);
+            System.out.println("Collision detected: " + mtv);
+          }
+        }else{
+          tile.setIsColliding(false);
+        }
       }
     }
     

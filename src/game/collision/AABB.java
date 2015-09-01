@@ -35,5 +35,9 @@ public class AABB{
     return axes;
   }
   
+  public Projection projectOnto(Vector2f axis){
+    return new Projection(vertices, axis);
+  }
+  
   
 }
