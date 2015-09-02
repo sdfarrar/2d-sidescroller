@@ -6,6 +6,7 @@ import java.awt.Color;
 
 import math.Vector2f;
 import graphics.render.LayeredRenderer;
+import game.collision.MinimumTranslationVector;
 import game.input.KeyInput;
 
 public class Player extends AbstractMoveableEntity {
@@ -80,6 +81,11 @@ private float speed = 3.5f;
   
   public void decreaseSpeed(){
     speed-=.2f;
+  }
+  
+  public void translate(MinimumTranslationVector mtv){
+    Vector2f v = mtv.getAxis().scale(mtv.getDistance());
+    this.position = this.position.add(v);
   }
 
 }

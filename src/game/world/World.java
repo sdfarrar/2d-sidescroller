@@ -82,6 +82,7 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
           }else{
             tile.setIsColliding(true);
             System.out.println("Collision detected: " + mtv);
+            player.translate(mtv);
           }
         }else{
           tile.setIsColliding(false);
