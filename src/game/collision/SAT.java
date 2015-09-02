@@ -41,6 +41,12 @@ public class SAT{
       }
     }
     
+    // Make sure our axis vector is in the correct direction
+    Vector2f v = a.getCenter().to(b.getCenter());
+    if(v.dot(axis)>=0){
+      axis = axis.negate();
+    }
+    
     MinimumTranslationVector mtv = new MinimumTranslationVector(axis, overlap);
     return mtv;    
   }

@@ -27,8 +27,9 @@ public class AABB{
     Vector2f[] axes = new Vector2f[vertices.length];
     for(int i=0; i<vertices.length; i++){
       Vector2f v1 = vertices[i];
-      Vector2f v2 = (i+1 < vertices.length) ? vertices[i+1] : vertices[0];
-      Vector2f edge = v1.subtract(v2);
+      //Vector2f v2 = (i+1 < vertices.length) ? vertices[i+1] : vertices[0];
+      Vector2f v2 = vertices[i + 1 == vertices.length ? 0 : i + 1];
+      Vector2f edge = v1.to(v2);
       Vector2f normal = edge.getNormal();
       axes[i] = normal.normalize();
     }
@@ -37,6 +38,10 @@ public class AABB{
   
   public Projection projectOnto(Vector2f axis){
     return new Projection(vertices, axis);
+  }
+  
+  public Vector2f getCenter(){
+    return this.center;
   }
   
   

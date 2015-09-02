@@ -23,7 +23,9 @@
  */
 package math;
 
+import java.math.BigDecimal;
 import java.nio.FloatBuffer;
+
 import org.lwjgl.BufferUtils;
 
 /**
@@ -80,7 +82,14 @@ public class Vector2f {
      */
     public Vector2f normalize() {
         float length = length();
-        return divide(length);
+        Vector2f normalized = divide(length);
+        normalized.x = new BigDecimal(String.valueOf(normalized.x)).setScale(4, BigDecimal.ROUND_HALF_UP).floatValue();
+        normalized.y = new BigDecimal(String.valueOf(normalized.y)).setScale(4, BigDecimal.ROUND_HALF_UP).floatValue();
+        return normalized;
+    }
+    
+    public Vector2f to(Vector2f other){
+      return other.add(this.negate());
     }
 
     /**
