@@ -3,11 +3,13 @@ package game.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.collision.AABB;
 import game.collision.MinimumTranslationVector;
 import game.collision.SAT;
 import game.entity.AbstractEntity;
 import game.entity.Player;
 import graphics.render.LayeredRenderer;
+import math.Vector2f;
 
 public class World{
 private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
@@ -70,19 +72,23 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
       }
     }
     
+    ArrayList<Tile> collidingTiles = new ArrayList<Tile>();
+    MinimumTranslationVector mtv = new MinimumTranslationVector();
+    
     for(int i=leftTile; i<=rightTile; ++i){
       for(int j=botTile; j<=topTile; ++j){
         Tile tile = tiles[i][j];
         tile.checkCollision(true); // for debug drawing purposes
-        //TODO collision resolution
+
         if(!tile.getTileType().equals(TileType.SKY)){
-          MinimumTranslationVector mtv = SAT.checkCollision(player.getAABB(), tile.getAABB());
+          mtv = SAT.checkCollision(player.getAABB(), tile.getAABB());
           if(mtv.getDistance()==0.0f){ // no collision
             tile.setIsColliding(false);
           }else{
             tile.setIsColliding(true);
-            System.out.println("Collision detected: " + mtv);
-            player.translate(mtv);
+            //System.out.println("Collision detected: " + mtv);
+            //player.translate(mtv);
+            collidingTiles.add(tile);
           }
         }else{
           tile.setIsColliding(false);
@@ -90,6 +96,13 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
       }
     }
     
+    if(collidingTiles.size()==2){
+      AABB merged = AABB.merge(collidingTiles.get(0).getAABB(), collidingTiles.get(1).getAABB());
+      mtv = SAT.checkCollision(player.getAABB(), merged); // TODO currently isn't working. might be due to
+                                                          // TODO the combined AABBs containing the end of the player
+                                                          // TODO look into containment
+    }
+    player.translate(mtv);
     //physics.checkPlayerTileCollision(player, tiles);
     //physics.checkCollision(player, entities, tiles);
 //    entities.get(0).update(physics, delta);
