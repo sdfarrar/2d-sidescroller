@@ -49,7 +49,8 @@ public class SidescrollerGame extends VariableTimestepGame{
 
 	@Override
 	public void initGameObjects() {
-		world = new World(new Player(250, 400, 55, 115));
+		world = new World(new Player(250, 400, 45, 115));
+//		world = new World(new Player(250, 400, 25, 25));
 	}
 
 	@Override

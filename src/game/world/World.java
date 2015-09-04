@@ -81,7 +81,7 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
         tile.checkCollision(true); // for debug drawing purposes
 
         if(!tile.getTileType().equals(TileType.SKY)){
-          mtv = SAT.checkCollision(player.getAABB(), tile.getAABB());
+          mtv = SAT.checkCollision(player.getAABB(), tile.getAABB(), false);
           if(mtv.getDistance()==0.0f){ // no collision
             tile.setIsColliding(false);
           }else{
@@ -98,7 +98,7 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
     
     if(collidingTiles.size()==2){
       AABB merged = AABB.merge(collidingTiles.get(0).getAABB(), collidingTiles.get(1).getAABB());
-      mtv = SAT.checkCollision(player.getAABB(), merged); // TODO currently isn't working. might be due to
+      mtv = SAT.checkCollision(player.getAABB(), merged, true); // TODO currently isn't working. might be due to
                                                           // TODO the combined AABBs containing the end of the player
                                                           // TODO look into containment
     }

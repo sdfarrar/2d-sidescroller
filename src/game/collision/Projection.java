@@ -41,14 +41,31 @@ public class Projection{
   /**
    * Computes the overlap of two projections
    * @param other the other Projection
-   * @return the overlap of the two projections. If this is no overlap -1 is returned
+   * @return the overlap of the two projections. If this is no overlap 0 is returned
    */
   public float getOverlap(Projection other){
-    if(other.min<this.max && other.min>this.min){
-      return Math.abs(other.min-this.max);
-    }else if(other.max>this.min && other.max<this.max){
-      return Math.abs(other.max-this.min);
+//    if(other.min<this.max && other.min>this.min){
+//      return Math.abs(other.min-this.max);
+//    }else if(other.max>this.min && other.max<this.max){
+//      return Math.abs(other.max-this.min);
+//    }
+    if(this.overlap(other)){
+      return Math.min(this.max, other.max) - Math.max(this.min, other.min);
     }
-    return -1;
+    return 0;
   }
+  
+  public boolean contains(Projection other){
+    return other.min > this.min && other.max < this.max;
+  }
+  
+  public float getMin(){
+    return this.min;
+  }
+  
+  public float getMax(){
+    return this.max;
+  }
+  
+  
 }
