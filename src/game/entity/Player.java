@@ -88,4 +88,21 @@ private float speed = 3.5f;
     this.position = this.position.add(v);
   }
 
+  public void restrictToBounds(int xBoundMin, int xBoundMax, int yBoundMin, int yBoundMax){
+    if(position.x-width/2f < xBoundMin){
+      position.x = xBoundMin + width/2f;
+    }
+    if(position.x+width/2f > xBoundMax){
+      position.x = xBoundMax - width/2f;
+    }
+    
+    if(position.y-height/2f < yBoundMin){
+      position.y = yBoundMin + height/2f;
+    }
+    if(position.y+height/2f > yBoundMax){
+      position.y = yBoundMax - height/2f - 1f;
+    }
+    rebuildHitbox();
+  }
+
 }

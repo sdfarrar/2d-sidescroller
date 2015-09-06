@@ -55,15 +55,13 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
   
   public void update(float delta){
     player.update(delta);
+    player.restrictToBounds(0, WORLD_WIDTH, 0, WORLD_HEIGHT);
     
     
     int topTile = (int)(Math.floor((float)player.getHitbox().getTopBound()/Tile.HEIGHT));
     int botTile = (int)(Math.ceil((float)player.getHitbox().getBottomBound()/Tile.HEIGHT)) - 1;
     int leftTile = (int)(Math.floor((float)player.getHitbox().getLeftBound()/Tile.WIDTH));
     int rightTile = (int)(Math.ceil((float)player.getHitbox().getRightBound()/Tile.WIDTH)) - 1;
-    
-    // prints out tiles to check for collisions
-    //System.out.println("left: " + leftTile + ", right: " + rightTile + ", bottom: " + botTile + ", top: " + topTile);
     
     for(int i=0; i<WORLD_WIDTH/Tile.WIDTH; i++){
       for(int j=0; j<WORLD_HEIGHT/Tile.HEIGHT; j++){
@@ -86,8 +84,6 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
             tile.setIsColliding(false);
           }else{
             tile.setIsColliding(true);
-            //System.out.println("Collision detected: " + mtv);
-            //player.translate(mtv);
             collidingTiles.add(tile);
           }
         }else{
@@ -98,14 +94,10 @@ private static int WORLD_WIDTH=800, WORLD_HEIGHT=600;
     
     if(collidingTiles.size()==2){
       AABB merged = AABB.merge(collidingTiles.get(0).getAABB(), collidingTiles.get(1).getAABB());
-      mtv = SAT.checkCollision(player.getAABB(), merged, true); // TODO currently isn't working. might be due to
-                                                          // TODO the combined AABBs containing the end of the player
-                                                          // TODO look into containment
+      mtv = SAT.checkCollision(player.getAABB(), merged, true);
     }
+    
     player.translate(mtv);
-    //physics.checkPlayerTileCollision(player, tiles);
-    //physics.checkCollision(player, entities, tiles);
-//    entities.get(0).update(physics, delta);
   }
   
   public void render(LayeredRenderer renderer, float alpha){
